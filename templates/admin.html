@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th scope="col">User Name</th>
+      <th scope="col">Password</th>
+      <th scope="col">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for each in data %}
+      <tr>
+        <td>{{ each.username }}</td>
+        <td>{{ each.password }}</td>
+        <td>{{ each.email }}</td>
+      </tr>
+      {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}
