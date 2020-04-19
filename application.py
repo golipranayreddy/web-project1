@@ -1,6 +1,7 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from models import *
+
 
 app = Flask(__name__)
 
@@ -8,9 +9,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://shbhdlrudoukbc:56b95ae93382d
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
+# setting up the secret key for the application
+app.config['SECRET_KEY'] = 'f9a1520561f1faf67f36a3a620a45e80'
+
 @app.route('/')
-@app.route('/register')
 def home():
+    return render_template('home.html')
+
+@app.route('/register')
+def register():
     return render_template('register.html')
 
 @app.route('/result', methods=['GET','POST'])
@@ -29,6 +36,26 @@ def admin():
     data = User.query.all()
     print(data[0].username)
     return render_template('admin.html', data = data)
+
+@app.route('/login' , methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        user_name = request.form.get("user_name")
+        password = request.form.get("password_name")
+        print(user_name)
+        print(password)
+        user_obj = User.query.filter_by(username = user_name).first()
+        if password == user_obj.password and  user_name == user_obj.username:
+            session["USERNAME"] = user_name
+            return redirect(url_for("profile"))
+    return render_template('login.html')
+
+@app.route('/profile')
+def profile():
+    if session.get("USERNAME") is not None:
+        return render_template('profile.html' , user_name = session.get("USERNAME"))
+    else:
+        return redirect(url_for("login"))    
 
 
 if __name__ == "__main__":
