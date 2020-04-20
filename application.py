@@ -16,20 +16,18 @@ app.config['SECRET_KEY'] = 'f9a1520561f1faf67f36a3a620a45e80'
 def home():
     return render_template('home.html')
 
-@app.route('/register')
+@app.route('/register' , methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        full_name = request.form.get("FUll_name")
+        user_name = request.form.get("user_name")
+        email = request.form.get("email_name")
+        password = request.form.get("password_name")
+        user_obj = User(FullName = full_name, username = user_name, email = email, password = password)
+        db.session.add(user_obj)
+        db.session.commit()
+        return render_template('result.html', Username=user_name) 
     return render_template('register.html')
-
-@app.route('/result', methods=['GET','POST'])
-def result():
-    full_name = request.form.get("FUll_name")
-    user_name = request.form.get("user_name")
-    email = request.form.get("email_name")
-    password = request.form.get("password_name")
-    user_obj = User(FullName = full_name, username = user_name, email = email, password = password)
-    db.session.add(user_obj)
-    db.session.commit()
-    return render_template('result.html', Username=user_name)
 
 @app.route('/admin')
 def admin():
@@ -56,6 +54,11 @@ def profile():
         return render_template('profile.html' , user_name = session.get("USERNAME"))
     else:
         return redirect(url_for("login"))    
+
+@app.route('/logout')
+def logout():
+    session.pop("USERNAME", None)
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
