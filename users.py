@@ -11,8 +11,6 @@ def main():
     f = open("users.csv")
     reader = csv.reader(f)
     for name, username, mail_id in reader:
-        # db.execute("INSERT INTO flights (name, username, mail_id) VALUES (:name, :username, :mail_id)
-        #            {"name": name, "username": username, "mail_id": mail_id })
         print(f" added user where name = {name} and username = {username} and mail_id = {mail_id}")
     # db.commit()
 

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{%  block content %} 
+<h1 style="text-align: center; background-color: rgb(211, 214, 6); margin-top: 50px; color: black;"> My Profile</h1>
+<h1 style="margin-left: 30px; margin-top: 40px;">Name : {{user_name}}</h1>
+<a href="{{ url_for('logout') }}" style="font-size: xx-large; font-weight: bolder;" > <center>logout</center></a> 
+{% endblock %}
